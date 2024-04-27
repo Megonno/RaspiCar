@@ -24,15 +24,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.22")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-websockets:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-xml:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-cbor:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-protobuf:$ktorVersion")
-    implementation("io.ktor:ktor-client-logging:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
 }
 
 kotlin {
