@@ -8,3 +8,5 @@ Commands:
 - 5:angle; set camera pan angle
 - 6:port; start video stream on specified port
 - 7:0; stop video stream
+- 8:0; request ultrasonic sensor reading
+- 9:0; request grayscale sensor reading
