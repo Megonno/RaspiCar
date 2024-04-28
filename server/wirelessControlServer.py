@@ -14,6 +14,18 @@ def pass_to_correct_function(input_string):
         start_video_stream(parts[1])
     elif parts[0].lstrip('0') == '7':
         stop_video_stream()
+    elif parts[0].lstrip('0') == '8':
+        send_ultrasonic_reading()
+    elif parts[0].lstrip('0') == '9':
+        send_grayscale_reading
+
+def send_ultrasonic_reading():
+    #read ultrasonic sensor and send to socket
+    print("sending ultrasonic sensor reading")
+
+def send_grayscale_reading():
+    #read grayscale module data
+    print("sending grayscale module reading")
 
 def direction_servo(angle):
     print(angle)
