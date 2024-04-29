@@ -49,7 +49,6 @@ def pass_to_correct_function(input_string):
 def tts_speak(text, lang):
     try:
         tts.lang(lang)
-        tts.music_set_volume(volume)
         tts.say(text)
         print(f"Speaking: {text}")
         return "1"
