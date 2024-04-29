@@ -40,16 +40,15 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '9':
             return send_grayscale_reading
         elif parts[0].lstrip('0') == '10':
-            return tts_speak(parts[1], parts[2], parts[3])
+            return tts_speak(parts[1], parts[3])
         elif parts[0].lstrip('0') == '11':
             return tts_play(parts[1], int(parts[2]))
     except Exception as e:
         return e
 
-def tts_speak(text, volume, lang):
+def tts_speak(text, lang):
     try:
         tts.lang(lang)
-        tts.music_set_volume(volume)
         tts.say(text)
         print(f"Speaking: {text}")
         return "1"
@@ -111,7 +110,7 @@ def motor_backward(speed):
 
 def camera_tilt(angle):
     try:
-        px.set_camera_servo2_angle(angle)
+        px.set_cam_tilt_angle(angle)
         print(f"Camera tilt angle: {angle}")
         return "1"
     except Exception as e:
@@ -119,7 +118,7 @@ def camera_tilt(angle):
 
 def camera_pan(angle):
     try:
-        px.set_camera_servo1_angle(angle)
+        px.set_cam_pan_angle(angle)
         print(f"Camera pan angle: {angle}")
         return "1"
     except Exception as e:
