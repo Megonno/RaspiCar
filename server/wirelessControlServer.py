@@ -1,13 +1,31 @@
 import socket
+from picarx import Picarx
+import time
+from robot_hat import Music,TTS
+from pydoc import text
+from vilib import Vilib
+from time import sleep, time, strftime, localtime
+import threading
+import readchar
+import os
+
+
+px = Picarx(ultrasonic_pins=['D2','D3'], grayscale_pins=['A0', 'A1', 'A2'])
+tts = TTS()
+music = Music()
+current_state = None
+px_power = 10
+offset = 20
+last_state = "stop"
 
 def pass_to_correct_function(input_string):
     parts = input_string.split(':')
     if parts[0].lstrip('0') == '1':
         direction_servo(parts[1])
     elif parts[0].lstrip('0') == '2':
-        motor_right(parts[1])
+        motor_forward(parts[1])
     elif parts[0].lstrip('0') == '3':
-        motor_left(parts[1])
+        motor_backward(parts[1])
     elif parts[0].lstrip('0') == '4':
         camera_tilt(parts[1])
     elif parts[0].lstrip('0') == '5':
@@ -20,44 +38,73 @@ def pass_to_correct_function(input_string):
         send_ultrasonic_reading()
     elif parts[0].lstrip('0') == '9':
         send_grayscale_reading
+    elif parts[0].lstrip('0') == '10':
+        tts_speak(parts[1], parts[2], parts[3])
+    elif parts[0].lstrip('0') == '11':
+        tts_play(parts[1], parts[2])
+
+def tts_speak(text, volume, lang):
+    tts.lang(lang)
+    tts.music_set_volume(volume)
+    tts.say(text)
+    print(f"Speaking: {text}")
+    return 1    
+
+def tts_play(file, volume):
+    music.music_set_volume(volume)
+    music.sound_play(file)
+    print(f"Playing: {file}")
+    return 1
 
 def send_ultrasonic_reading():
     #read ultrasonic sensor and send to socket
-    print("sending ultrasonic sensor reading")
-    return "ultrasonic sensor reading"
+    distance = round(px.ultrasonic.read(), 2)
+    print(f"sending ultrasonic sensor reading: {distance}")
+    return distance
 
 def send_grayscale_reading():
     #read grayscale module data
+    gm_val_list = px.get_grayscale_data()
+    gm_state = get_status(gm_val_list)
+    _state = px.get_line_status(val_list)
+    cliff_status = px.get_cliff_status(gm_val_list)
     print("sending grayscale module reading")
-    return "grayscale module reading"
+    return f"{gm_state}:{_state}:{cliff_status}"
 
 def direction_servo(angle):
-    print(angle)
-    return "success"
+    px.set_dir_servo_angle(angle)
+    print(f"Direction servo angle: {angle}")
+    return 1
 
-def motor_right(speed):
-    print(f"Motor right speed: {speed}")
-    return "success"
+def motor_forward(speed):
+    px.forward(speed)
+    print(f"Motor forward speed: {speed}")
+    return 1
 
-def motor_left(speed):
-    print(f"Motor left speed: {speed}")
-    return "success"
+def motor_backward(speed):
+    px.backward(speed)
+    print(f"Motor backward speed: {speed}")
+    return 1
 
 def camera_tilt(angle):
+    px.set_camera_servo2_angle(angle)
     print(f"Camera tilt angle: {angle}")
-    return "success"
+    return 1
 
 def camera_pan(angle):
+    px.set_camera_servo1_angle(angle)
     print(f"Camera pan angle: {angle}")
-    return "success"
+    return 1
 
 def start_video_stream(port):
+    Vilib.camera_start(vflip=False,hflip=False)
+    Vilib.display(local=True,web=True)
     print(f"Video stream started on port {port}")
-    return "success"
+    return "not yet implemented"
 
 def stop_video_stream():
     print("Video stream stopped")
-    return "success"
+    return 1
 
 host = '127.0.0.1'
 port = 5000
