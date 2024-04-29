@@ -48,13 +48,13 @@ def tts_speak(text, volume, lang):
     tts.music_set_volume(volume)
     tts.say(text)
     print(f"Speaking: {text}")
-    return 1    
+    return "1"    
 
 def tts_play(file, volume):
     music.music_set_volume(volume)
     music.sound_play(file)
     print(f"Playing: {file}")
-    return 1
+    return "1"
 
 def send_ultrasonic_reading():
     #read ultrasonic sensor and send to socket
@@ -74,27 +74,27 @@ def send_grayscale_reading():
 def direction_servo(angle):
     px.set_dir_servo_angle(angle)
     print(f"Direction servo angle: {angle}")
-    return 1
+    return "1"
 
 def motor_forward(speed):
     px.forward(speed)
     print(f"Motor forward speed: {speed}")
-    return 1
+    return "1"
 
 def motor_backward(speed):
     px.backward(speed)
     print(f"Motor backward speed: {speed}")
-    return 1
+    return "1"
 
 def camera_tilt(angle):
     px.set_camera_servo2_angle(angle)
     print(f"Camera tilt angle: {angle}")
-    return 1
+    return "1"
 
 def camera_pan(angle):
     px.set_camera_servo1_angle(angle)
     print(f"Camera pan angle: {angle}")
-    return 1
+    return "1"
 
 def start_video_stream(port):
     Vilib.camera_start(vflip=False,hflip=False)
@@ -104,7 +104,7 @@ def start_video_stream(port):
 
 def stop_video_stream():
     print("Video stream stopped")
-    return 1
+    return "1"
 
 port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -120,7 +120,7 @@ while True:
         data = conn.recv(1024).decode()
         if data:
             response = str(pass_to_correct_function(data))
-            response += str("\n")
+            response += "\n"
             conn.sendall(response.encode())
     except:
         break
