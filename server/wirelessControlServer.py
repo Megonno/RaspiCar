@@ -21,17 +21,17 @@ last_state = "stop"
 def pass_to_correct_function(input_string):
     parts = input_string.split(':')
     if parts[0].lstrip('0') == '1':
-        direction_servo(parts[1])
+        direction_servo(int(parts[1]))
     elif parts[0].lstrip('0') == '2':
-        motor_forward(parts[1])
+        motor_forward(int(parts[1]))
     elif parts[0].lstrip('0') == '3':
-        motor_backward(parts[1])
+        motor_backward(int(parts[1]))
     elif parts[0].lstrip('0') == '4':
-        camera_tilt(parts[1])
+        camera_tilt(int(parts[1]))
     elif parts[0].lstrip('0') == '5':
-        camera_pan(parts[1])
+        camera_pan(int(parts[1]))
     elif parts[0].lstrip('0') == '6':
-        start_video_stream(parts[1])
+        start_video_stream(int(parts[1]))
     elif parts[0].lstrip('0') == '7':
         stop_video_stream()
     elif parts[0].lstrip('0') == '8':
@@ -39,9 +39,9 @@ def pass_to_correct_function(input_string):
     elif parts[0].lstrip('0') == '9':
         send_grayscale_reading
     elif parts[0].lstrip('0') == '10':
-        tts_speak(parts[1], parts[2], parts[3])
+        tts_speak(parts[1], parts[2], int(parts[3]))
     elif parts[0].lstrip('0') == '11':
-        tts_play(parts[1], parts[2])
+        tts_play(parts[1], int(parts[2]))
 
 def tts_speak(text, volume, lang):
     tts.lang(lang)
@@ -106,10 +106,9 @@ def stop_video_stream():
     print("Video stream stopped")
     return 1
 
-host = '127.0.0.1'
 port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((host, port))
+s.bind(('', port))
 s.listen(1)
 conn, addr = s.accept()
 print('Connected by', addr)
@@ -121,7 +120,7 @@ while True:
         data = conn.recv(1024).decode()
         if data:
             response = pass_to_correct_function(data)
-            response += "\n"
+            str(response) += str("\n")
             conn.sendall(response.encode())
     except:
         break
