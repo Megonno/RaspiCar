@@ -10,3 +10,6 @@ Commands:
 - 7:0; stop video stream
 - 8:0; request ultrasonic sensor reading
 - 9:0; request grayscale sensor reading
+- 10:text; speak text
+- 11:file; play audio file
+
