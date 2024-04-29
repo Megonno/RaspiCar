@@ -110,7 +110,7 @@ def motor_backward(speed):
 
 def camera_tilt(angle):
     try:
-        px.set_camera_servo2_angle(angle)
+        px.set_cam_tilt_angle(angle)
         print(f"Camera tilt angle: {angle}")
         return "1"
     except Exception as e:
@@ -118,7 +118,7 @@ def camera_tilt(angle):
 
 def camera_pan(angle):
     try:
-        px.set_camera_servo1_angle(angle)
+        px.set_cam_pan_angle(angle)
         print(f"Camera pan angle: {angle}")
         return "1"
     except Exception as e:
