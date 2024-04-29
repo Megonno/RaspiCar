@@ -21,27 +21,27 @@ last_state = "stop"
 def pass_to_correct_function(input_string):
     parts = input_string.split(':')
     if parts[0].lstrip('0') == '1':
-        direction_servo(int(parts[1]))
+        return direction_servo(int(parts[1]))
     elif parts[0].lstrip('0') == '2':
-        motor_forward(int(parts[1]))
+        return motor_forward(int(parts[1]))
     elif parts[0].lstrip('0') == '3':
-        motor_backward(int(parts[1]))
+        return motor_backward(int(parts[1]))
     elif parts[0].lstrip('0') == '4':
-        camera_tilt(int(parts[1]))
+        return camera_tilt(int(parts[1]))
     elif parts[0].lstrip('0') == '5':
-        camera_pan(int(parts[1]))
+        return camera_pan(int(parts[1]))
     elif parts[0].lstrip('0') == '6':
-        start_video_stream(int(parts[1]))
+        return start_video_stream(int(parts[1]))
     elif parts[0].lstrip('0') == '7':
-        stop_video_stream()
+        return stop_video_stream()
     elif parts[0].lstrip('0') == '8':
-        send_ultrasonic_reading()
+        return send_ultrasonic_reading()
     elif parts[0].lstrip('0') == '9':
-        send_grayscale_reading
+        return send_grayscale_reading
     elif parts[0].lstrip('0') == '10':
-        tts_speak(parts[1], parts[2], int(parts[3]))
+        return tts_speak(parts[1], parts[2], int(parts[3]))
     elif parts[0].lstrip('0') == '11':
-        tts_play(parts[1], int(parts[2]))
+        return tts_play(parts[1], int(parts[2]))
 
 def tts_speak(text, volume, lang):
     tts.lang(lang)
@@ -113,6 +113,7 @@ s.listen(1)
 conn, addr = s.accept()
 print('Connected by', addr)
 #init connection
+print("sending init")
 initmsg = "init\n"
 conn.sendall(initmsg.encode())
 while True:
