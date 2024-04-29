@@ -9,8 +9,8 @@ import threading
 import readchar
 import os
 
-
-px = Picarx(ultrasonic_pins=['D2','D3'], grayscale_pins=['A0', 'A1', 'A2'])
+px = Picarx()
+#px = Picarx(ultrasonic_pins=['D2','D3'], grayscale_pins=['A0', 'A1', 'A2'])
 tts = TTS()
 music = Music()
 current_state = None
@@ -113,11 +113,15 @@ s.bind((host, port))
 s.listen(1)
 conn, addr = s.accept()
 print('Connected by', addr)
+#init connection
+initmsg = "init\n"
+conn.sendall(initmsg.encode())
 while True:
     try:
         data = conn.recv(1024).decode()
         if data:
             response = pass_to_correct_function(data)
+            response += "\n"
             conn.sendall(response.encode())
     except:
         break
