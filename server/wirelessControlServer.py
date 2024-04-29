@@ -119,8 +119,8 @@ while True:
     try:
         data = conn.recv(1024).decode()
         if data:
-            response = pass_to_correct_function(data)
-            str(response) += str("\n")
+            response = str(pass_to_correct_function(data))
+            response += str("\n")
             conn.sendall(response.encode())
     except:
         break
