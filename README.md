@@ -13,3 +13,8 @@ Commands:
 - 10:text:lang; speak text with custom language; response: 1 if sucessful
 - 11:file:volume; play audio file (file must be in the same folder as the server script); response: 1 if sucessful
 
+#Usage
+
+1. start the server script on the car.
+2. start the clint script on the computer that will control the car
+3. using the client, send the specified commands
