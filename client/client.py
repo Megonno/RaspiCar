@@ -6,6 +6,8 @@ port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((host, port))
 
+print("Welcome to the client. Check out the README to learn about the possible commands.")
+
 if s.recv(1024).decode() == "init":
     print("connection established")
 
