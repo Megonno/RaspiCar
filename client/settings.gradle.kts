@@ -1,1 +1,1 @@
-rootProject.name = "RaspiCar"
+rootProject.name = "RaspiCarClient"
