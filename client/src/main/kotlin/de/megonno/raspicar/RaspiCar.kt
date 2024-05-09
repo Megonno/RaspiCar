@@ -8,7 +8,7 @@ fun main() {
 
     client.connect(host, port) {}
 
-    println("Commands: \n- Servo [Angle]\n- RightMotor [Speed]\n- LeftMotor [Speed]\n- CameraTilt [Angle]\n- CameraPan [Angle]\n- Say [Message] (Language))\n- Debug [Message]\n\n")
+    println("Commands: \n- Servo [Angle]\n- RightMotor [Speed]\n- LeftMotor [Speed]\n- CameraTilt [Angle]\n- CameraPan [Angle]\n- StartVideo (Port)\n- StopVideo\n- Say [Message] (Language))\n- Debug [Message]\n\n")
 
     while (true) {
         val rawInput = readln()
@@ -20,6 +20,8 @@ fun main() {
             "leftmotor" -> "3:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
             "cameratilt" -> "4:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
             "camerapan" -> "5:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "startvideo" -> "6:${input.getOrNull(1)?.toIntOrNull() ?: 6000}"
+            "stopvideo" -> "7:0"
             "say" -> "10:${input.getOrNull(1) ?: "You don't typed a valid message!"}:${input.getOrNull(2) ?: "en-US"}"
             "debug" -> rawInput.removePrefix("debug ")
             else -> null
