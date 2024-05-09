@@ -1,5 +1,5 @@
 .idea
-build
 client/.gradle
 client/build
 client/gradle
+*.iml
