@@ -4,8 +4,6 @@ val projectGroupId = "de.megonno"
 val projectVersion = "1.0.0"
 val main = "$projectGroupId.$projectArtifactId.${projectName}Kt"
 
-val ktorVersion = "2.3.10"
-
 plugins {
     kotlin("jvm") version "1.9.22"
     kotlin("plugin.serialization") version "1.9.22"
@@ -18,7 +16,6 @@ version = projectVersion
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
