@@ -6,11 +6,28 @@ const val port = 5000
 fun main() {
     val client = SocketClient()
 
-    client.connect(host, port) {
+    client.connect(host, port) {}
 
-    }
+    println("Commands: \n- Servo [Angle]\n- RightMotor [Speed]\n- LeftMotor [Speed]\n- CameraTilt [Angle]\n- CameraPan [Angle]\n- Say [Message] (Language))\n- Debug [Message]\n\n")
 
     while (true) {
-        client.sendMessage(readln())
+        val rawInput = readln()
+        val input = rawInput.split(" ")
+
+        val message = when (input.getOrNull(0)?.lowercase()) {
+            "servo" -> "1:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "rightmotor" -> "2:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "leftmotor" -> "3:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "cameratilt" -> "4:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "camerapan" -> "5:${input.getOrNull(1)?.toIntOrNull() ?: 0}"
+            "say" -> "10:${input.getOrNull(1) ?: "You don't typed a valid message!"}:${input.getOrNull(2) ?: "en-US"}"
+            "debug" -> rawInput.removePrefix("debug ")
+            else -> null
+        }
+
+        message?.let {
+            println(it)
+            client.sendMessage(it)
+        }
     }
 }
