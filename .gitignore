@@ -1,4 +1,5 @@
-.gradle
 .idea
-gradle
 build
+client/.gradle
+client/build
+client/gradle
