@@ -4,6 +4,7 @@ host = 'localhost'
 port = 5000
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.timeout(5)
 s.connect((host, port))
 
 print("Welcome to the client. Check out the README to learn about the possible commands.")
@@ -18,4 +19,5 @@ if s.recv(1024).decode() == "init":
             print(f"Response: {data}")
         except Exception as e:
             print(e)
+            s.close()
 s.close()
