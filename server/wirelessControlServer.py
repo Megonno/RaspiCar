@@ -2,7 +2,6 @@ import socket
 from picarx import Picarx
 import time
 from robot_hat import Music,TTS
-from pydoc import text
 from vilib import Vilib
 from time import sleep, time, strftime, localtime
 import threading
