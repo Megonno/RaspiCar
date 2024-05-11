@@ -38,7 +38,7 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '8':
             return send_ultrasonic_reading()
         elif parts[0].lstrip('0') == '9':
-            return send_grayscale_reading
+            return send_grayscale_reading()
         elif parts[0].lstrip('0') == '10':
             return tts_speak(parts[1], parts[2])
         elif parts[0].lstrip('0') == '11':
