@@ -31,7 +31,7 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '5':
             return camera_pan(int(parts[1]))
         elif parts[0].lstrip('0') == '6':
-            return start_video_stream(int(parts[1]))
+            return start_video_stream()
         elif parts[0].lstrip('0') == '7':
             return stop_video_stream()
         elif parts[0].lstrip('0') == '8':
@@ -123,12 +123,11 @@ def camera_pan(angle):
     except Exception as e:
         return e
 
-def start_video_stream(port):
+def start_video_stream():
     try:
         Vilib.camera_start(vflip=False,hflip=False)
-        Vilib.display(local=True,web=True)
-        print(f"Video stream started on port {port}")
-        return "not yet implemented"
+        return Vilib.display(local=True,web=True)
+        #return "not yet implemented"
     except Exception as e:
         return e
 
