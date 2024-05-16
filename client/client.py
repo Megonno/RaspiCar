@@ -14,9 +14,7 @@ print("connection established")
 
 sleep(2)
 
-if s.recv(1024).decode() != "init":
-    print("Didn't receive init. Quitting...")
-    exit()
+print(s.recv(1024).decode())
 
 while True:
     try:
