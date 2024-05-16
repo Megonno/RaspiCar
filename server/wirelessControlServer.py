@@ -33,7 +33,7 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '6':
             return start_video_stream()
         elif parts[0].lstrip('0') == '7':
-            return stop_video_stream()
+            exit()
         elif parts[0].lstrip('0') == '8':
             return send_ultrasonic_reading()
         elif parts[0].lstrip('0') == '9':
@@ -131,12 +131,12 @@ def start_video_stream():
     except Exception as e:
         return e
 
-def stop_video_stream():
-    try:
-        print("Video stream stopped")
-        return "1"
-    except Exception as e:
-        return e
+#def stop_video_stream():
+#    try:
+#        print("Video stream stopped")
+#        return "1"
+#    except Exception as e:
+#        return e
 
 port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

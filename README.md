@@ -11,7 +11,7 @@
 | 4:angle        | set camera tilt angle                                                  | 1 if successful                               |
 | 5:angle        | set camera pan angle                                                   | 1 if successful                               |
 | 6:0         | start video stream                                                        | link and port to stream |
-| 7:0            | stop video stream                                                      | not yet implemented                               |
+| 7:0            | stop program (no response)                                                     |                              |
 | 8:0            | request ultrasonic sensor reading                                      | distance                                      |
 | 9:0            | request grayscale sensor reading                                       | grayscale_status:line_status:cliff_status     |
 | 10:text:lang   | speak text with custom language                                        | 1 if successful                               |
