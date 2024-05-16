@@ -31,7 +31,7 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '5':
             return camera_pan(int(parts[1]))
         elif parts[0].lstrip('0') == '6':
-            return start_video_stream()
+            return start_video_stream(int(parts[1]))
         elif parts[0].lstrip('0') == '7':
             exit()
         elif parts[0].lstrip('0') == '8':
