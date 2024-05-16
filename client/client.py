@@ -12,7 +12,7 @@ print("Welcome to the client. Check out the README to learn about the possible c
 #if s.recv(1024).decode() == "init":
 print("connection established")
 
-sleep(2)
+sleep(1)
 
 print(s.recv(1024).decode())
 
