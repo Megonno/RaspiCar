@@ -123,7 +123,8 @@ def camera_pan(angle):
     except Exception as e:
         return e
 
-def start_video_stream():
+def start_video_stream(port):
+    print(port)
     try:
         Vilib.camera_start(vflip=False,hflip=False)
         return Vilib.display(local=True,web=True)
