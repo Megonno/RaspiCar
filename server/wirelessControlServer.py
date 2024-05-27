@@ -12,10 +12,6 @@ px = Picarx()
 #px = Picarx(ultrasonic_pins=['D2','D3'], grayscale_pins=['A0', 'A1', 'A2'])
 tts = TTS()
 music = Music()
-current_state = None
-px_power = 10
-offset = 20
-last_state = "stop"
 
 def pass_to_correct_function(input_string):
     try:
@@ -76,11 +72,9 @@ def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
-        gm_state = get_status(gm_val_list)
-        _state = px.get_line_status(val_list)
         cliff_status = px.get_cliff_status(gm_val_list)
         print("sending grayscale module reading")
-        return f"{gm_state}:{_state}:{cliff_status}"
+        return f"{gm_val_list}:{cliff_status}"
     except Exception as e:
         return e
 def direction_servo(angle):
