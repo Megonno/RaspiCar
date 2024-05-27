@@ -72,9 +72,8 @@ def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
-        cliff_status = px.get_cliff_status(gm_val_list)
         print("sending grayscale module reading")
-        return f"{gm_val_list}:{cliff_status}"
+        return gm_val_list
     except Exception as e:
         return e
 def direction_servo(angle):
