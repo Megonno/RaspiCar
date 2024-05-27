@@ -1,10 +1,8 @@
-val mApiName = "RaspiCar"
-val mApiArtifactId = "raspicar"
-val mApiGroupId = "de.megonno"
-val mApiVersion = "1.0.0"
-val main = "$mApiGroupId.$mApiArtifactId.${mApiName}Kt"
-
-val ktorVersion = "2.3.10"
+val projectName = "RaspiCar"
+val projectArtifactId = "raspicar"
+val projectGroupId = "de.megonno"
+val projectVersion = "1.0.0"
+val main = "$projectGroupId.$projectArtifactId.${projectName}Kt"
 
 plugins {
     kotlin("jvm") version "1.9.22"
@@ -13,12 +11,11 @@ plugins {
     application
 }
 
-group = mApiGroupId
-version = mApiVersion
+group = projectGroupId
+version = projectVersion
 
 repositories {
     mavenCentral()
-    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {

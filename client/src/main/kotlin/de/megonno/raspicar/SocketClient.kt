@@ -18,52 +18,54 @@ class SocketClient {
     private var printWriter: PrintWriter? = null
     private var clientJob: Job? = null
 
-    suspend fun connect(hostname: String, port: Int, inputHandler: (String) -> Unit) {
-        try {
-            withContext(Dispatchers.IO) {
-                client = Socket(hostname, port)
-                println("Connected with ${client!!.remoteSocketAddress}")
-
-                bufferedReader = BufferedReader(InputStreamReader(client!!.getInputStream()))
-                printWriter = PrintWriter(client!!.getOutputStream())
-                println("Init input and output")
-            }
-        } catch (exception: ConnectException) {
-            println("Exception: ${exception.message}")
-
-            client = null
-            bufferedReader = null
-            printWriter = null
-
-            return
-        }
-
-        clientJob = clientScope.launch {
+    fun connect(hostname: String, port: Int, inputHandler: (String) -> Unit) {
+        clientScope.launch {
             try {
-                while (!client!!.isClosed) {
-                    val message = bufferedReader!!.readLine()
+                withContext(Dispatchers.IO) {
+                    client = Socket(hostname, port)
+                    println("Connected with ${client!!.remoteSocketAddress}")
 
-                    if (message.isNotBlank()) {
-                        println("Received: $message")
-
-                        inputHandler.invoke(message)
-                    }
+                    bufferedReader = BufferedReader(InputStreamReader(client!!.getInputStream()))
+                    printWriter = PrintWriter(client!!.getOutputStream())
+                    println("Init input and output")
                 }
-            } catch (exception: Exception) {
+            } catch (exception: ConnectException) {
                 println("Exception: ${exception.message}")
+
+                client = null
+                bufferedReader = null
+                printWriter = null
+
+                return@launch
             }
-        }
 
-        clientJob?.invokeOnCompletion {
-            bufferedReader?.close()
-            printWriter?.close()
-            client?.close()
-            println("Disconnected")
+            clientJob = clientScope.launch {
+                try {
+                    while (!client!!.isClosed) {
+                        val message = bufferedReader!!.readLine()
 
-            bufferedReader = null
-            printWriter = null
-            client = null
-            clientJob = null
+                        if (message.isNotBlank()) {
+                            println("Received: $message")
+
+                            inputHandler.invoke(message)
+                        }
+                    }
+                } catch (exception: Exception) {
+                    println("Exception: ${exception.message}")
+                }
+            }
+
+            clientJob?.invokeOnCompletion {
+                bufferedReader?.close()
+                printWriter?.close()
+                client?.close()
+                println("Disconnected")
+
+                bufferedReader = null
+                printWriter = null
+                client = null
+                clientJob = null
+            }
         }
     }
 

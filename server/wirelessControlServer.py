@@ -2,7 +2,6 @@ import socket
 from picarx import Picarx
 import time
 from robot_hat import Music,TTS
-from pydoc import text
 from vilib import Vilib
 from time import sleep, time, strftime, localtime
 import threading
@@ -13,10 +12,6 @@ px = Picarx()
 #px = Picarx(ultrasonic_pins=['D2','D3'], grayscale_pins=['A0', 'A1', 'A2'])
 tts = TTS()
 music = Music()
-current_state = None
-px_power = 10
-offset = 20
-last_state = "stop"
 
 def pass_to_correct_function(input_string):
     try:
@@ -34,13 +29,13 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '6':
             return start_video_stream(int(parts[1]))
         elif parts[0].lstrip('0') == '7':
-            return stop_video_stream()
+            exit()
         elif parts[0].lstrip('0') == '8':
             return send_ultrasonic_reading()
         elif parts[0].lstrip('0') == '9':
-            return send_grayscale_reading
+            return send_grayscale_reading()
         elif parts[0].lstrip('0') == '10':
-            return tts_speak(parts[1], parts[3])
+            return tts_speak(parts[1], parts[2])
         elif parts[0].lstrip('0') == '11':
             return tts_play(parts[1], int(parts[2]))
     except Exception as e:
@@ -77,11 +72,8 @@ def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
-        gm_state = get_status(gm_val_list)
-        _state = px.get_line_status(val_list)
-        cliff_status = px.get_cliff_status(gm_val_list)
         print("sending grayscale module reading")
-        return f"{gm_state}:{_state}:{cliff_status}"
+        return gm_val_list
     except Exception as e:
         return e
 def direction_servo(angle):
@@ -125,20 +117,20 @@ def camera_pan(angle):
         return e
 
 def start_video_stream(port):
+    print(port)
     try:
         Vilib.camera_start(vflip=False,hflip=False)
-        Vilib.display(local=True,web=True)
-        print(f"Video stream started on port {port}")
-        return "not yet implemented"
+        return Vilib.display(local=True,web=True)
+        #return "not yet implemented"
     except Exception as e:
         return e
 
-def stop_video_stream():
-    try:
-        print("Video stream stopped")
-        return "1"
-    except Exception as e:
-        return e
+#def stop_video_stream():
+#    try:
+#        print("Video stream stopped")
+#        return "1"
+#    except Exception as e:
+#        return e
 
 port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
