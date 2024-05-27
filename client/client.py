@@ -14,15 +14,14 @@ print("connection established")
 
 sleep(1)
 
-print(s.recv(1024).decode())
-
-while True:
-    try:
-        s.sendall(input("Send command: ").encode())
-        data = s.recv(1024).decode()
-        print(f"Response: {data}")
-    except Exception as e:
-        print(e)
-        s.close()
-        break
-s.close()
+if s.recv(1024).decode() == "init\n":
+    while True:
+        try:
+            s.sendall(input("Send command: ").encode())
+            data = s.recv(1024).decode()
+            print(f"Response: {data}")
+        except Exception as e:
+            print(e)
+            s.close()
+            break
+    s.close()
