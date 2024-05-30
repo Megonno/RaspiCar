@@ -6,8 +6,8 @@
 | Command        | Description                                                            | Response                                      |
 |----------------|------------------------------------------------------------------------|-----------------------------------------------|
 | 1:angle        | set steering servo angle                                               | 1 if successful                               |
-| 2:speed        | set right motor speed                                                  | 1 if successful                               |
-| 3:speed        | set left motor speed                                                   | 1 if successful                               |
+| 2:speed        | set forward speed                                                  | 1 if successful                               |
+| 3:speed        | set backwards speed                                                   | 1 if successful                               |
 | 4:angle        | set camera tilt angle                                                  | 1 if successful                               |
 | 5:angle        | set camera pan angle                                                   | 1 if successful                               |
 | 6:0            | start video stream                                                     | None                                          |
