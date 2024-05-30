@@ -67,7 +67,7 @@ def send_ultrasonic_reading():
         #read ultrasonic sensor and send to socket
         distance = round(px.ultrasonic.read(), 2)
         print(f"sending ultrasonic sensor reading: {distance}")
-        return distance
+        return '1:' + distance
     except Exception as e:
         print(e)
         return e
