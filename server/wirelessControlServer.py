@@ -39,6 +39,7 @@ def pass_to_correct_function(input_string):
         elif parts[0].lstrip('0') == '11':
             return tts_play(parts[1], int(parts[2]))
     except Exception as e:
+        print(e)
         return e
 
 def tts_speak(text, lang):
@@ -48,6 +49,7 @@ def tts_speak(text, lang):
         print(f"Speaking: {text}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def tts_play(file, volume):
@@ -57,6 +59,7 @@ def tts_play(file, volume):
         print(f"Playing: {file}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def send_ultrasonic_reading():
@@ -66,6 +69,7 @@ def send_ultrasonic_reading():
         print(f"sending ultrasonic sensor reading: {distance}")
         return distance
     except Exception as e:
+        print(e)
         return e
 
 def send_grayscale_reading():
@@ -76,6 +80,7 @@ def send_grayscale_reading():
         print("sending grayscale module reading")
         return grayscale_data
     except Exception as e:
+        print(e)
         return e
 def direction_servo(angle):
     try:
@@ -83,6 +88,7 @@ def direction_servo(angle):
         print(f"Direction servo angle: {angle}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def motor_forward(speed):
@@ -91,6 +97,7 @@ def motor_forward(speed):
         print(f"Motor forward speed: {speed}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def motor_backward(speed):
@@ -99,6 +106,7 @@ def motor_backward(speed):
         print(f"Motor backward speed: {speed}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def camera_tilt(angle):
@@ -107,6 +115,7 @@ def camera_tilt(angle):
         print(f"Camera tilt angle: {angle}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def camera_pan(angle):
@@ -115,6 +124,7 @@ def camera_pan(angle):
         print(f"Camera pan angle: {angle}")
         return "1"
     except Exception as e:
+        print(e)
         return e
 
 def start_video_stream(port):
@@ -124,6 +134,7 @@ def start_video_stream(port):
         return Vilib.display(local=True,web=True)
         #return "not yet implemented"
     except Exception as e:
+        print(e)
         return e
 
 #def stop_video_stream():
