@@ -13,37 +13,35 @@ px = Picarx()
 tts = TTS()
 music = Music()
 
-import asyncio
-
-async def pass_to_correct_function(input_string):
+def pass_to_correct_function(input_string):
     try:
         parts = input_string.split(':')
         if parts[0].lstrip('0') == '1':
-            return await direction_servo(int(parts[1]))
+            return direction_servo(int(parts[1]))
         elif parts[0].lstrip('0') == '2':
-            return await motor_forward(int(parts[1]))
+            return motor_forward(int(parts[1]))
         elif parts[0].lstrip('0') == '3':
-            return await motor_backward(int(parts[1]))
+            return motor_backward(int(parts[1]))
         elif parts[0].lstrip('0') == '4':
-            return await camera_tilt(int(parts[1]))
+            return camera_tilt(int(parts[1]))
         elif parts[0].lstrip('0') == '5':
-            return await camera_pan(int(parts[1]))
+            return camera_pan(int(parts[1]))
         elif parts[0].lstrip('0') == '6':
-            return await start_video_stream(int(parts[1]))
+            return start_video_stream(int(parts[1]))
         elif parts[0].lstrip('0') == '7':
             exit()
         elif parts[0].lstrip('0') == '8':
-            return await send_ultrasonic_reading()
+            return send_ultrasonic_reading()
         elif parts[0].lstrip('0') == '9':
-            return await send_grayscale_reading()
+            return send_grayscale_reading()
         elif parts[0].lstrip('0') == '10':
-            return await tts_speak(parts[1], parts[2])
+            return tts_speak(parts[1], parts[2])
         elif parts[0].lstrip('0') == '11':
-            return await tts_play(parts[1], int(parts[2]))
+            return tts_play(parts[1], int(parts[2]))
     except Exception as e:
         return e
 
-async def tts_speak(text, lang):
+def tts_speak(text, lang):
     try:
         tts.lang(lang)
         tts.say(text)
@@ -52,7 +50,7 @@ async def tts_speak(text, lang):
     except Exception as e:
         return e
 
-async def tts_play(file, volume):
+def tts_play(file, volume):
     try:
         music.music_set_volume(volume)
         music.sound_play(file)
@@ -61,7 +59,7 @@ async def tts_play(file, volume):
     except Exception as e:
         return e
 
-async def send_ultrasonic_reading():
+def send_ultrasonic_reading():
     try:
         #read ultrasonic sensor and send to socket
         distance = round(px.ultrasonic.read(), 2)
@@ -70,7 +68,7 @@ async def send_ultrasonic_reading():
     except Exception as e:
         return e
 
-async def send_grayscale_reading():
+def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
@@ -79,8 +77,7 @@ async def send_grayscale_reading():
         return grayscale_data
     except Exception as e:
         return e
-
-async def direction_servo(angle):
+def direction_servo(angle):
     try:
         px.set_dir_servo_angle(angle)
         print(f"Direction servo angle: {angle}")
@@ -88,7 +85,7 @@ async def direction_servo(angle):
     except Exception as e:
         return e
 
-async def motor_forward(speed):
+def motor_forward(speed):
     try:
         px.forward(speed)
         print(f"Motor forward speed: {speed}")
@@ -96,7 +93,7 @@ async def motor_forward(speed):
     except Exception as e:
         return e
 
-async def motor_backward(speed):
+def motor_backward(speed):
     try:
         px.backward(speed)
         print(f"Motor backward speed: {speed}")
@@ -104,7 +101,7 @@ async def motor_backward(speed):
     except Exception as e:
         return e
 
-async def camera_tilt(angle):
+def camera_tilt(angle):
     try:
         px.set_cam_tilt_angle(angle)
         print(f"Camera tilt angle: {angle}")
@@ -112,7 +109,7 @@ async def camera_tilt(angle):
     except Exception as e:
         return e
 
-async def camera_pan(angle):
+def camera_pan(angle):
     try:
         px.set_cam_pan_angle(angle)
         print(f"Camera pan angle: {angle}")
@@ -120,7 +117,7 @@ async def camera_pan(angle):
     except Exception as e:
         return e
 
-async def start_video_stream(port):
+def start_video_stream(port):
     print(port)
     try:
         Vilib.camera_start(vflip=False,hflip=False)
@@ -151,9 +148,13 @@ while True:
     try:
         data = conn.recv(1024).decode()
         if data:
-            response = str(await pass_to_correct_function(data))
+            response = str(pass_to_correct_function(data))
             response += "\n"
             conn.sendall(response.encode())
     except:
         break
 conn.close()
+
+
+
+
