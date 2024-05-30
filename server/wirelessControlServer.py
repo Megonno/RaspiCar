@@ -65,8 +65,7 @@ def tts_play(file, volume):
 def send_ultrasonic_reading():
     try:
         #read ultrasonic sensor and send to socket
-        if not px.ultrasonic.read() > 1000:
-            distance = round(px.ultrasonic.read(), 2)
+        distance = round(px.ultrasonic.read(), 2)
         print(f"sending ultrasonic sensor reading: {distance}")
         distance = "2:" + str(distance)
         return distance
