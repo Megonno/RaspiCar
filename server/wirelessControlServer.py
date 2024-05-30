@@ -72,9 +72,7 @@ def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
-        grayscale_data = None
-        for value in gm_val_list:
-            grayscale_data + ":" + (str(value))
+        grayscale_data = ':'.join(map(str, gm_val_list))
         print("sending grayscale module reading")
         return grayscale_data
     except Exception as e:
