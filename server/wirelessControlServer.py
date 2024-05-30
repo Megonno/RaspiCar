@@ -72,8 +72,11 @@ def send_grayscale_reading():
     try:
         #read grayscale module data
         gm_val_list = px.get_grayscale_data()
+        grayscale_data = []
+        for value in gm_val_list:
+            grayscale_data.append(int(value))
         print("sending grayscale module reading")
-        return gm_val_list
+        return grayscale_data
     except Exception as e:
         return e
 def direction_servo(angle):
