@@ -134,6 +134,7 @@ def start_video_stream(port):
 
 port = 5000
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 s.bind(('', port))
 s.listen(1)
 conn, addr = s.accept()
