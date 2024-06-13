@@ -1,71 +1,46 @@
+package ui.main
+
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import logic.SocketClient
+import logic.Command
 
 @Composable
-fun App() {
-    val client = SocketClient()
+fun AppRoot(viewModel: MainViewModel) {
+    App(
+        speed = viewModel.speed.collectAsState().value,
+        color1 = viewModel.color1.collectAsState().value,
+        color2 = viewModel.color2.collectAsState().value,
+        color3 = viewModel.color3.collectAsState().value,
+        ultrasonicText = viewModel.ultrasonicText.collectAsState().value,
+        steering = viewModel.steering.collectAsState().value,
+        cameraTilt = viewModel.cameraTilt.collectAsState().value,
+        cameraPan = viewModel.cameraPan.collectAsState().value,
+        onAction = viewModel::onAction
+    )
+}
 
-    val reciveScope = CoroutineScope(Dispatchers.IO)
-
-    var speed by remember { mutableStateOf(0f) }
-
-    var color1 by remember { mutableStateOf(Color.Unspecified) }
-    var color2 by remember { mutableStateOf(Color.Unspecified) }
-    var color3 by remember { mutableStateOf(Color.Unspecified) }
-
-    var ultrasonicText by remember { mutableStateOf("") }
-
-    client.connect(hostname = "10.21.220.46", port = 5000) { message ->
-        if (message.startsWith("1:")) {
-            val content = message.removePrefix("1:").split(":").map { it.toInt() }.toIntArray()
-
-            val a = content[0] / 1600f
-            val b = content[1] / 1600f
-            val c = content[2] / 1600f
-
-            color1 = Color(a, a, a, 1f)
-            color2 = Color(b, b, b, 1f)
-            color3 = Color(c, c, c, 1f)
-        }
-
-        if (message.startsWith("2:")) {
-            val content = message.removePrefix("2:")
-
-            ultrasonicText = content
-
-            if (content.toFloat() < 20.0f) {
-                speed = 0f
-                client.sendMessage("2:0")
-                client.sendMessage("3:0")
-            }
-        }
-    }
-
-    reciveScope.launch {
-        while (true) {
-            client.sendMessage("9:0")
-            client.sendMessage("8:0")
-            delay(250L)
-        }
-    }
-
+@Composable
+private fun App(
+    speed: Float,
+    color1: Color,
+    color2: Color,
+    color3: Color,
+    ultrasonicText: String,
+    steering: Float,
+    cameraTilt: Float,
+    cameraPan: Float,
+    onAction: (MainAction) -> Unit,
+) {
     MaterialTheme {
         Row {
             Column(
@@ -88,7 +63,7 @@ fun App() {
                 Spacer(modifier = Modifier.size(200.dp))
                 Text(text = "Distance: $ultrasonicText", fontSize = 36.sp)
                 Button(onClick = {
-                    client.sendMessage("6:0")
+                    onAction.invoke(MainAction.SendCommand(command = Command.StartCamera))
                 }) {
                     Text(text = "Camera")
                 }
@@ -103,11 +78,11 @@ fun App() {
                     Slider(
                         value = speed,
                         onValueChange = {
-                            speed = it
+                            onAction.invoke(MainAction.UpdateSpeed(speed = it))
                             if (speed > 0) {
-                                client.sendMessage("2:${speed.toInt()}")
+                                onAction.invoke(MainAction.SendCommand(command = Command.MoveForwards(speed = speed.toInt())))
                             } else {
-                                client.sendMessage("3:${speed.toInt() * -1}")
+                                onAction.invoke(MainAction.SendCommand(command = Command.MoveBackwards(speed = speed.toInt())))
                             }
                         },
                         valueRange = -100f..100f,
@@ -135,22 +110,21 @@ fun App() {
                     )
 
                     Button(onClick = {
-                        speed = 0f
-                        client.sendMessage("2:0")
-                        client.sendMessage("3:0")
+                        onAction.invoke(MainAction.UpdateSpeed(speed = 0f))
+                        onAction.invoke(MainAction.SendCommand(command = Command.MoveForwards(speed = 0)))
+                        onAction.invoke(MainAction.SendCommand(command = Command.MoveBackwards(speed = 0)))
                     }) {
                         Text(text = "Reset")
                     }
                 }
 
-                var steering by remember { mutableStateOf(0f) }
                 Column {
                     Text(text = "steering   ", fontSize = 22.sp)
                     Slider(
                         value = steering,
                         onValueChange = {
-                            steering = it
-                            client.sendMessage("1:${steering.toInt()}")
+                            onAction.invoke(MainAction.UpdateSteering(steering = it))
+                            onAction.invoke(MainAction.SendCommand(command = Command.ChangeSteering(steering = steering.toInt())))
                         },
                         valueRange = -30f..30f,
                         modifier = Modifier.graphicsLayer {
@@ -175,21 +149,20 @@ fun App() {
                     )
 
                     Button(onClick = {
-                        steering = 0f
-                        client.sendMessage("1:0")
+                        onAction.invoke(MainAction.UpdateSteering(steering = 0f))
+                        onAction.invoke(MainAction.SendCommand(command = Command.ChangeSteering(steering = 0)))
                     }) {
                         Text(text = "Reset")
                     }
                 }
 
-                var cameraTilt by remember { mutableStateOf(0f) }
                 Column {
                     Text(text = "cameraTilt", fontSize = 22.sp)
                     Slider(
                         value = cameraTilt,
                         onValueChange = {
-                            cameraTilt = it
-                            client.sendMessage("4:${cameraTilt.toInt()}")
+                            onAction.invoke(MainAction.UpdateCameraTilt(cameraTilt = it))
+                            onAction.invoke(MainAction.SendCommand(command = Command.ChangeCameraTilt(cameraTilt = cameraTilt.toInt())))
                         },
                         valueRange = -35f..65f,
                         modifier = Modifier.graphicsLayer {
@@ -214,14 +187,13 @@ fun App() {
                     )
                 }
 
-                var cameraPan by remember { mutableStateOf(0f) }
                 Column {
                     Text(text = "cameraPan  ", fontSize = 22.sp)
                     Slider(
                         value = cameraPan,
                         onValueChange = {
-                            cameraPan = it
-                            client.sendMessage("5:${cameraPan.toInt()}")
+                            onAction.invoke(MainAction.UpdateCameraPan(cameraPan = it))
+                            onAction.invoke(MainAction.SendCommand(command = Command.ChangeCameraPan(cameraPan = cameraPan.toInt())))
                         },
                         valueRange = -58f..58f,
                         modifier = Modifier.graphicsLayer {

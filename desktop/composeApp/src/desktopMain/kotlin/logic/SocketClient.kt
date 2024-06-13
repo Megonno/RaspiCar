@@ -11,15 +11,14 @@ import java.io.PrintWriter
 import java.net.ConnectException
 import java.net.Socket
 
-class SocketClient {
-    private val clientScope = CoroutineScope(Dispatchers.IO)
+class SocketClient(private val connectionScope: CoroutineScope = CoroutineScope(Dispatchers.IO)) {
     private var client: Socket? = null
     private var bufferedReader: BufferedReader? = null
     private var printWriter: PrintWriter? = null
     private var clientJob: Job? = null
 
     fun connect(hostname: String, port: Int, inputHandler: (String) -> Unit) {
-        clientScope.launch {
+        connectionScope.launch {
             try {
                 withContext(Dispatchers.IO) {
                     client = Socket(hostname, port)
@@ -39,7 +38,7 @@ class SocketClient {
                 return@launch
             }
 
-            clientJob = clientScope.launch {
+            clientJob = connectionScope.launch {
                 try {
                     while (!client!!.isClosed) {
                         val message = bufferedReader!!.readLine()
